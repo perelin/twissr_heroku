@@ -1,14 +1,10 @@
 {
-  "name": "go-getting-started",
-  "description": "Go Getting Started Example App",
+  "name": "t2rss",
+  "description": "Twitter2RSS",
   "keywords": [
-    "getting-started",
+    "rss",
     "go",
-    "sample",
-    "example"
+    "twitter"
   ],
-  "image": "heroku/go:1.6",
-  "mount_dir": "src/github.com/heroku/go-getting-started",
-  "website": "http://github.com/heroku/go-getting-started",
-  "repository": "http://github.com/heroku/go-getting-started"
+  "image": "heroku/go:1.6"
 }
