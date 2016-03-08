@@ -57,6 +57,16 @@
 			"Rev": "8cd570d8b4ed84b18bca9d8c3ae2db55885ccd8b"
 		},
 		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-82-ge182dc4",
+			"Rev": "e182dc4027e2ded4b19396d638610f2653295f36"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/oid",
+			"Comment": "go1.0-cutoff-82-ge182dc4",
+			"Rev": "e182dc4027e2ded4b19396d638610f2653295f36"
+		},
+		{
 			"ImportPath": "github.com/manucorporat/sse",
 			"Rev": "c142f0f1baea5cef7f98a8a6c222f6134368c1f5"
 		},
