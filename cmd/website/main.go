@@ -4,45 +4,13 @@ import (
 	"encoding/gob"
 	"log"
 	"net/http"
-	"net/url"
-	"time"
 
 	"github.com/garyburd/go-oauth/oauth"
 	"github.com/gin-gonic/gin"
-	"github.com/gorilla/feeds"
 )
 
 func twitterHomeTimelineRSSHandler(c *gin.Context) {
-	userID := c.Param("userID")
-	//c.String(http.StatusOK, "UserID: %s", userID)
-	twitterUser, err := getTwitterUserFromDB(userID)
-	if err != nil {
-		http.Error(c.Writer, err.Error(), 500)
-	}
-	timeline := getTwitterHomeTimeline(twitterUser, url.Values{})
-	now := time.Now()
-	feed := &feeds.Feed{
-		Title:       twitterUser.screenName + " home timeline (provided by TwiSSR)",
-		Link:        &feeds.Link{Href: "http://twitter.com"},
-		Description: "Home timeline Twitter feed for " + twitterUser.screenName,
-		Author:      &feeds.Author{Name: "TwiSSR", Email: "info@twissr.com"},
-		Created:     now,
-	}
-
-	for _, e := range timeline {
-		//log.Printf("%v", e.crea)
-		createdAtTime, _ := e.CreatedAtTime()
-		linkToTweet := "https://twitter.com/" + e.User.ScreenName + "/status/" + e.IdStr
-		feed.Items = append(feed.Items, &feeds.Item{
-			Title:       e.User.Name,
-			Link:        &feeds.Link{Href: linkToTweet},
-			Description: e.Text,
-			Author:      &feeds.Author{Name: e.User.Name},
-			Created:     createdAtTime,
-		})
-	}
-
-	rss, err := feed.ToRss()
+	rss, err := getFeedForTwitterUser(c, c.Param("userID"))
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -75,27 +43,7 @@ func twitterCallbackHandler(c *gin.Context) {
 		saveTwitterCredsToDB(c, values)
 	}
 
-	getTwitterHomeTimeline(twitterUser, url.Values{})
-
-	now := time.Now()
-	feed := &feeds.Feed{
-		Title:       "jmoiron.net blog",
-		Link:        &feeds.Link{Href: "http://jmoiron.net/blog"},
-		Description: "discussion about tech, footie, photos",
-		Author:      &feeds.Author{Name: "Jason Moiron", Email: "jmoiron@jmoiron.net"},
-		Created:     now,
-	}
-
-	rss, err := feed.ToRss()
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	//saveTwitterCredsToDB(c, values)
-	//c.String(http.StatusOK, "%s", feed)
-
-	c.XML(http.StatusOK, rss)
-	//c.HTML(http.StatusOK, "twittercallback.tmpl.html", values)
+	c.HTML(http.StatusOK, "twittercallback.tmpl.html", values)
 }
 
 func main() {
