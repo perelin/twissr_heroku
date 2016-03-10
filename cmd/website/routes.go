@@ -31,6 +31,7 @@ func initRouter() {
 	})
 	router.GET("/tl", twitterLoginHandler)
 	router.GET("/tc", twitterCallbackHandler)
+	router.GET("/hometimeline/:userID", twitterHomeTimelineRSSHandler)
 	/*
 		router.GET("/tl", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "twitterlogin.tmpl.html", nil)

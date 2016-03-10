@@ -41,12 +41,13 @@ func verifyTwitterOAuthCreds(c *gin.Context, tempCreds *oauth.Credentials, verif
 	return values
 }
 
-func getTwitterHomeTimeline(user TwitterUser, v url.Values) {
+func getTwitterHomeTimeline(user TwitterUser, v url.Values) (timeline []anaconda.Tweet) {
 	api := anaconda.NewTwitterApi(user.oauthToken, user.oauthTokenSecret)
 	timeline, err := api.GetHomeTimeline(v)
 	if err != nil {
 		//http.Error(c.Writer, "Couldn´t get twitter API, "+err.Error(), 500)
 		log.Fatalf("Couldn´t get twitter API: %q", err)
 	}
-	log.Printf("Tieline: %v", timeline)
+	//log.Printf("Timeline: %v", timeline)
+	return timeline
 }
