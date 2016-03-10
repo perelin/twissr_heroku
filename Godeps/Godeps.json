@@ -49,6 +49,10 @@
 			"Rev": "1ea25387ff6f684839d82767c1733ff4d4d15d0a"
 		},
 		{
+			"ImportPath": "github.com/gorilla/feeds",
+			"Rev": "441264de03a8117ed530ae8e049d8f601a33a099"
+		},
+		{
 			"ImportPath": "github.com/gorilla/securecookie",
 			"Rev": "8dacca26977607e637262eb66b15b7d39f2d3009"
 		},
