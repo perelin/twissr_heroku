@@ -32,11 +32,12 @@ func twitterHomeTimelineRSSHandler(c *gin.Context) {
 	for _, e := range timeline {
 		//log.Printf("%v", e.crea)
 		createdAtTime, _ := e.CreatedAtTime()
+		linkToTweet := "https://twitter.com/" + e.User.ScreenName + "/status/" + e.IdStr
 		feed.Items = append(feed.Items, &feeds.Item{
 			Title:       e.User.Name,
-			Link:        &feeds.Link{Href: e.Source},
+			Link:        &feeds.Link{Href: linkToTweet},
 			Description: e.Text,
-			Author:      &feeds.Author{Name: e.User.Name, Email: e.User.Name},
+			Author:      &feeds.Author{Name: e.User.Name},
 			Created:     createdAtTime,
 		})
 	}
