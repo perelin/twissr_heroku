@@ -34,7 +34,7 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 		imageTag := ""
 		if len(img) > 0 {
 			log.Printf("img %v", img[0].Media_url_https)
-			imageTag = "<img src='" + img[0].Media_url_https + "' />"
+			imageTag = "<p><img src='" + img[0].Media_url_https + "' /></p>"
 		}
 
 		feedItem := &feeds.Item{

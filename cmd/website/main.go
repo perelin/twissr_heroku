@@ -43,6 +43,8 @@ func twitterCallbackHandler(c *gin.Context) {
 		saveTwitterCredsToDB(c, values)
 	}
 
+	values["rssFeedURL"][0] = "http://" + c.Request.Host + "/hometimeline/" + values["user_id"][0]
+
 	c.HTML(http.StatusOK, "twittercallback.tmpl.html", values)
 }
 
