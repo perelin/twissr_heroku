@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"net/url"
 	"time"
@@ -29,13 +30,21 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 		createdAtTime, _ := e.CreatedAtTime()
 		linkToTweet := "https://twitter.com/" + e.User.ScreenName + "/status/" + e.IdStr
 		title := e.User.Name + " @ " + e.CreatedAt
-		feed.Items = append(feed.Items, &feeds.Item{
+		img := e.Entities.Media
+		imageTag := ""
+		if len(img) > 0 {
+			log.Printf("img %v", img[0].Media_url_https)
+			imageTag = "<img src='" + img[0].Media_url_https + "' />"
+		}
+
+		feedItem := &feeds.Item{
 			Title:       title,
 			Link:        &feeds.Link{Href: linkToTweet},
-			Description: e.Text,
+			Description: e.Text + imageTag,
 			Author:      &feeds.Author{Name: e.User.Name},
 			Created:     createdAtTime,
-		})
+		}
+		feed.Items = append(feed.Items, feedItem)
 	}
 
 	return feed.ToRss()
