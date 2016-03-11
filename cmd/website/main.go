@@ -43,9 +43,15 @@ func twitterCallbackHandler(c *gin.Context) {
 		saveTwitterCredsToDB(c, values)
 	}
 
-	values["rssFeedURL"][0] = "http://" + c.Request.Host + "/hometimeline/" + values["user_id"][0]
+	content := gin.H{
+		"rssURL":             "http://" + c.Request.Host + "/hometimeline/" + values["user_id"][0],
+		"user_id":            values["user_id"][0],
+		"screen_name":        values["screen_name"][0],
+		"oauth_token":        values["oauth_token"][0],
+		"oauth_token_secret": values["oauth_token_secret"][0],
+	}
 
-	c.HTML(http.StatusOK, "twittercallback.tmpl.html", values)
+	c.HTML(http.StatusOK, "twittercallback.tmpl.html", content)
 }
 
 func main() {
