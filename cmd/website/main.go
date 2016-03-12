@@ -9,6 +9,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+func startPageHandler(c *gin.Context) {
+	c.HTML(http.StatusOK, "h5bp/twissr.html", nil)
+}
+
 func twitterHomeTimelineRSSHandler(c *gin.Context) {
 	rss, err := getFeedForTwitterUser(c, c.Param("userID"))
 	if err != nil {

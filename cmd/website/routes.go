@@ -2,7 +2,6 @@ package main
 
 import (
 	"log"
-	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -24,14 +23,23 @@ func getPort() string {
 func initRouter() {
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
+	router.LoadHTMLGlob("templates/h5bp/*.html")
 	router.Static("/static", "static")
+	router.Static("/js", "static/h5bp/js")
+	router.Static("/css", "static/h5bp/css")
+	router.Static("/img", "static/h5bp/img")
+	router.Static("/fonts", "static/h5bp/fonts")
 
-	router.GET("/", func(c *gin.Context) {
-		c.HTML(http.StatusOK, "index.tmpl.html", nil)
-	})
+	/*
+		router.GET("/", func(c *gin.Context) {
+			c.HTML(http.StatusOK, "index.tmpl.html", nil)
+		})*/
+
+	router.GET("/", startPageHandler)
 	router.GET("/tl", twitterLoginHandler)
 	router.GET("/tc", twitterCallbackHandler)
 	router.GET("/hometimeline/:userID", twitterHomeTimelineRSSHandler)
+
 	/*
 		router.GET("/tl", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "twitterlogin.tmpl.html", nil)
