@@ -1,0 +1,19 @@
+{{template "twissr_header.tmpl.html"}}
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>TwiSSR (beta)</h1>
+        <p>Get your Twitter home timeline as an RSS feed.</p>
+        <p>
+            Hi {{.screen_name}}!<br />
+            Everything worket out just fine. Here is the RSS feed for your
+            Twitter home timeline
+            <a class="btn btn-primary btn-lg" href="{{.rssURL}}" role="button">
+                {{.rssURL}}
+            </a>
+        </p>
+      </div>
+    </div>
+
+{{template "twissr_footer.tmpl.html"}}

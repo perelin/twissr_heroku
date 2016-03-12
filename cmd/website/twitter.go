@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// TwitterUser needs to have a comment...
 type TwitterUser struct {
 	userID, screenName, oauthToken, oauthTokenSecret, createDate string
 }
@@ -36,7 +37,8 @@ func verifyTwitterOAuthCreds(c *gin.Context, tempCreds *oauth.Credentials, verif
 	_, values, err := anaconda.GetCredentials(tempCreds, verifier)
 	if err != nil {
 		http.Error(c.Writer, "Error getting request token, "+err.Error(), 500)
-		log.Fatalf("Error verifying Twitter TempCreds: %q", err)
+		//c.Redirect(http.StatusFound, "/")
+		//log.Fatalf("Error verifying Twitter TempCreds: %q", err)
 	}
 	return values
 }

@@ -40,7 +40,8 @@ func initRouter() {
 
 	router.GET("/", startPageHandler)
 	router.GET("/tl", twitterLoginHandler)
-	router.GET("/tc", twitterCallbackHandler)
+	//router.GET("/tc", twitterCallbackHandler)
+	router.GET("/tc", twitterCallbackHandler2)
 	router.GET("/hometimeline/:userID", twitterHomeTimelineRSSHandler)
 
 	/*
