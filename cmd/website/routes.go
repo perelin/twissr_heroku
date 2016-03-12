@@ -23,7 +23,7 @@ func getPort() string {
 func initRouter() {
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*.tmpl.html")
-	router.LoadHTMLGlob("templates/h5bp/*.html")
+	//router.LoadHTMLGlob("templates/h5bp/*.html")
 	router.Static("/static", "static")
 	router.Static("/js", "static/h5bp/js")
 	router.Static("/css", "static/h5bp/css")
