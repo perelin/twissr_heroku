@@ -22,7 +22,10 @@ func getPort() string {
 
 func initRouter() {
 	router.Use(gin.Logger())
-	router.LoadHTMLGlob("templates/*.tmpl.html")
+	router.LoadHTMLGlob("templates/*")
+	/*router.LoadHTMLFiles("templates/twitterlogin.tmpl.html",
+	"templates/twittercallback.tmpl.html",
+	"templates/h5bp/twissr.html")*/
 	//router.LoadHTMLGlob("templates/h5bp/*.html")
 	router.Static("/static", "static")
 	router.Static("/js", "static/h5bp/js")

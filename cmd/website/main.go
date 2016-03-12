@@ -10,7 +10,7 @@ import (
 )
 
 func startPageHandler(c *gin.Context) {
-	c.HTML(http.StatusOK, "h5bp/twissr.html", nil)
+	c.HTML(http.StatusOK, "twissr.html", nil)
 }
 
 func twitterHomeTimelineRSSHandler(c *gin.Context) {
