@@ -4,19 +4,8 @@
    Author's custom styles
    ========================================================================== */
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   .jumbotron {
+   background-image: url("../img/birds-427909.jpg");
+   background-size: cover;
+    color:white;
+}

@@ -12,7 +12,7 @@ import (
 func startPageHandler(c *gin.Context) {
 	authURL, creds := getTwitterAuthBasics(c)
 	setTwitterTempCreds(c, creds)
-	c.HTML(http.StatusOK, "twissr.tmpl.html", gin.H{"tlurl": authURL})
+	c.HTML(http.StatusOK, "twissr.tmpl.html", gin.H{"authURL": authURL})
 }
 
 func twitterHomeTimelineRSSHandler(c *gin.Context) {
