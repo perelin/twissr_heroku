@@ -18,11 +18,11 @@ var (
 
 func initDB() *sql.DB {
 	log.Printf("DATABASE_URL: %s", os.Getenv("DATABASE_URL"))
-	db, errd := sql.Open("postgres", os.Getenv("DATABASE_URL"))
+	db_handle, errd := sql.Open("postgres", os.Getenv("DATABASE_URL"))
 	if errd != nil {
 		log.Fatalf("Error opening database: %q", errd)
 	}
-	return db
+	return db_handle
 }
 
 func getTwitterUserFromDB(twitterUserID string) (TwitterUser, error) {
@@ -35,7 +35,8 @@ func getTwitterUserFromDB(twitterUserID string) (TwitterUser, error) {
 		&twitterUser.screenName,
 		&twitterUser.oauthToken,
 		&twitterUser.oauthTokenSecret,
-		&twitterUser.createDate)
+		&twitterUser.createDate,
+		&twitterUser.lastRetrievalDate)
 	switch {
 	case err == sql.ErrNoRows:
 		log.Printf("No user with that ID.")
@@ -60,5 +61,27 @@ func saveTwitterCredsToDB(c *gin.Context, values url.Values) {
 		http.Error(c.Writer, "Error saving Twitter creds to DB, "+err.Error(), 500)
 		//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
 		log.Fatalf("Error saving Twitter creds to DB: %q", err)
+	}
+}
+
+func updateLastRetrievalInDB(c *gin.Context, userID string) {
+
+	_, err := db.Exec("UPDATE twitter_users SET last_retrieval_date = now() WHERE user_id = $1;",
+		userID)
+	/*
+		getTwitterUserFromDB(values["user_id"][0])
+
+		_, err := db.Exec("INSERT INTO twitter_users VALUES ($1, $2, $3, $4, now())",
+			values["user_id"][0],
+			values["screen_name"][0],
+			values["oauth_token"][0],
+			values["oauth_token_secret"][0])
+	*/
+
+	if err != nil {
+		//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
+		http.Error(c.Writer, "Error saving last retrieval date to DB, "+err.Error(), 500)
+		//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
+		log.Fatalf("Error saving last retrieval date to DB: %q", err)
 	}
 }

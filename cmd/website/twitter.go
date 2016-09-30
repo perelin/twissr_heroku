@@ -12,7 +12,12 @@ import (
 
 // TwitterUser needs to have a comment...
 type TwitterUser struct {
-	userID, screenName, oauthToken, oauthTokenSecret, createDate string
+	userID,
+	screenName,
+	oauthToken,
+	oauthTokenSecret,
+	createDate,
+	lastRetrievalDate string
 }
 
 func initAnaconda() {

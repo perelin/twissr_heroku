@@ -16,6 +16,7 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 		http.Error(c.Writer, err.Error(), 500)
 	}
 	timeline := getTwitterHomeTimeline(twitterUser, url.Values{})
+	updateLastRetrievalInDB(c, userID)
 	now := time.Now()
 	feed := &feeds.Feed{
 		Title:       twitterUser.screenName + " home timeline (provided by TwiSSR)",
@@ -30,7 +31,7 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 
 		createdAtTime, _ := e.CreatedAtTime()
 		linkToTweet := "https://twitter.com/" + e.User.ScreenName + "/status/" + e.IdStr
-		title := e.User.Name + " @ " + e.CreatedAt
+		title := e.User.Name + " @ " + e.CreatedAt + " | "
 
 		img := e.Entities.Media
 		imageTag := ""
@@ -49,9 +50,9 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 		links = links + "</p>"
 
 		feedItem := &feeds.Item{
-			Title:       title,
+			Title:       e.Text,
 			Link:        &feeds.Link{Href: linkToTweet},
-			Description: e.Text + links + imageTag,
+			Description: title + e.Text + links + imageTag,
 			Author:      &feeds.Author{Name: e.User.Name},
 			Created:     createdAtTime,
 		}
