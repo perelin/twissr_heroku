@@ -1,7 +1,6 @@
 package main
 
 import (
-	"net/http"
 	"net/url"
 	"strings"
 	"time"
@@ -14,7 +13,9 @@ import (
 func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 	twitterUser, err := getTwitterUserFromDB(userID)
 	if err != nil {
-		http.Error(c.Writer, err.Error(), 500)
+		//http.Error(c.Writer, err.Error(), 404)
+		//c.AbortWithStatus(404)
+		return "", err
 	}
 
 	timeline := getTwitterHomeTimeline(twitterUser, url.Values{})
@@ -52,11 +53,14 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 		}
 		links = links + "</p>"
 
+		// Text
+		text := linkURLs(e.Text)
+
 		// Feed
 		feedItem := &feeds.Item{
 			Title:       e.User.Name + ": " + titleText,
 			Link:        &feeds.Link{Href: linkToTweet},
-			Description: e.Text + links + imageTag,
+			Description: text + links + imageTag,
 			Author:      &feeds.Author{Name: e.User.Name},
 			Created:     createdAtTime,
 		}
@@ -67,14 +71,20 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 }
 
 func removeURLs(text string) string {
-
 	result := text
 	urls := xurls.Relaxed.FindAllString(text, -1)
-
 	for _, url := range urls {
 		result = strings.Replace(result, url, "", -1)
 	}
-
 	return result
+}
 
+func linkURLs(text string) string {
+	result := text
+	urls := xurls.Relaxed.FindAllString(text, -1)
+	for _, url := range urls {
+		result = strings.Replace(result, url,
+			"<a href='"+url+"' target='_blank'>"+url+"</a>", -1)
+	}
+	return result
 }

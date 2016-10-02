@@ -14,7 +14,7 @@ var (
 func getPort() string {
 	port := os.Getenv("PORT")
 	if port == "" {
-		log.Printf("$PORT is not set, using default port (8080)")
+		log.Printf("$PORT is not set, using default port (5000)")
 		port = "5000"
 	}
 	return port
