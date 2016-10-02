@@ -53,7 +53,8 @@ func getTwitterHomeTimeline(user TwitterUser, v url.Values) (timeline []anaconda
 	timeline, err := api.GetHomeTimeline(v)
 	if err != nil {
 		//http.Error(c.Writer, "Couldn´t get twitter API, "+err.Error(), 500)
-		log.Fatalf("Couldn´t get twitter API: %q", err)
+		//log.Fatalf("Couldn´t get twitter API: %q", err)
+		log.Printf("Couldn´t get twitter API: %q", err)
 	}
 	//log.Printf("Timeline: %v", timeline)
 	return timeline
