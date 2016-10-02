@@ -84,6 +84,11 @@
 			"Rev": "7fcbc72f853b92b5720db4a6b8482be612daef24"
 		},
 		{
+			"ImportPath": "github.com/mvdan/xurls",
+			"Comment": "v0.9.0-6-g5a3dc90",
+			"Rev": "5a3dc90eb5681fc090a854cdb1e4cb4f4f01b278"
+		},
+		{
 			"ImportPath": "golang.org/x/net/context",
 			"Rev": "d9558e5c97f85372afee28cf2b6059d7d3818919"
 		},
