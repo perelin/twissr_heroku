@@ -55,6 +55,7 @@ func getTwitterHomeTimeline(user TwitterUser, v url.Values) (timeline []anaconda
 		//http.Error(c.Writer, "Couldn´t get twitter API, "+err.Error(), 500)
 		//log.Fatalf("Couldn´t get twitter API: %q", err)
 		log.Printf("Couldn´t get twitter API: %q", err)
+		timeline = append(timeline, anaconda.Tweet{Text: auth_failed})
 	}
 	//log.Printf("Timeline: %v", timeline)
 	return timeline

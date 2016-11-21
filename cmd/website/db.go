@@ -41,7 +41,7 @@ func getTwitterUserFromDB(twitterUserID string) (TwitterUser, error) {
 	case err == sql.ErrNoRows:
 		log.Printf("No user with that ID.")
 	case err != nil:
-		log.Fatal(err)
+		log.Printf("Unknown error (is postgress running?): %q", err)
 	default:
 		fmt.Printf("Values %q", twitterUser)
 	}
@@ -49,18 +49,33 @@ func getTwitterUserFromDB(twitterUserID string) (TwitterUser, error) {
 }
 
 func saveTwitterCredsToDB(c *gin.Context, values url.Values) {
-	getTwitterUserFromDB(values["user_id"][0])
 
-	_, err := db.Exec("INSERT INTO twitter_users VALUES ($1, $2, $3, $4, now())",
-		values["user_id"][0],
-		values["screen_name"][0],
-		values["oauth_token"][0],
-		values["oauth_token_secret"][0])
+	twitterUser, err := getTwitterUserFromDB(values["user_id"][0])
 	if err != nil {
-		//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
-		http.Error(c.Writer, "Error saving Twitter creds to DB, "+err.Error(), 500)
-		//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
-		log.Fatalf("Error saving Twitter creds to DB: %q", err)
+		_, err := db.Exec("INSERT INTO twitter_users VALUES ($1, $2, $3, $4, now(), now())",
+			values["user_id"][0],
+			values["screen_name"][0],
+			values["oauth_token"][0],
+			values["oauth_token_secret"][0])
+		if err != nil {
+			//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
+			http.Error(c.Writer, "Error saving Twitter creds to DB, "+err.Error(), 500)
+			//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
+			log.Fatalf("Error saving Twitter creds to DB: %q", err)
+		}
+		log.Printf("Initialy saved twitter user creds to db: %q", values["screen_name"][0])
+	} else {
+		_, err := db.Exec("UPDATE twitter_users SET oauth_token = $1, oauth_token_secret = $2 WHERE user_id = $3",
+			values["oauth_token"][0],
+			values["oauth_token_secret"][0],
+			twitterUser.userID)
+		if err != nil {
+			//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
+			http.Error(c.Writer, "Error updateing Twitter creds to DB, "+err.Error(), 500)
+			//c.String(http.StatusInternalServerError, log.Printf("Error updateing DB tick: %v", err))
+			log.Fatalf("Error updating Twitter creds to DB: %q", err)
+		}
+		log.Printf("updated twitter user creds to db: %q", twitterUser.screenName)
 	}
 }
 

@@ -57,12 +57,23 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 		text := linkURLs(e.Text)
 
 		// Feed
-		feedItem := &feeds.Item{
-			Title:       e.User.Name + ": " + titleText,
-			Link:        &feeds.Link{Href: linkToTweet},
-			Description: text + links + imageTag,
-			Author:      &feeds.Author{Name: e.User.Name},
-			Created:     createdAtTime,
+		feedItem := &feeds.Item{}
+		if e.Text == auth_failed {
+			feedItem = &feeds.Item{
+				Title:       "Twitter authentication failed!",
+				Link:        &feeds.Link{Href: "http://www.twissr.com"},
+				Description: "Please visit <a href='http://www.twissr.com'>http://www.twissr.com</a> to reauthenticate.",
+				Author:      &feeds.Author{Name: "TwiSSR"},
+				Created:     createdAtTime,
+			}
+		} else {
+			feedItem = &feeds.Item{
+				Title:       e.User.Name + ": " + titleText,
+				Link:        &feeds.Link{Href: linkToTweet},
+				Description: text + links + imageTag,
+				Author:      &feeds.Author{Name: e.User.Name},
+				Created:     createdAtTime,
+			}
 		}
 		feed.Items = append(feed.Items, feedItem)
 	}
