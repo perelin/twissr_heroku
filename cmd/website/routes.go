@@ -21,6 +21,12 @@ func getPort() string {
 }
 
 func initRouter() {
+
+	router.Use(NewRelic("175defc71b45f0e19f5073564299f2c9779da80b", "TwiSSR", true))
+
+	//config := newrelic.NewConfig("TwiSSR", "175defc71b45f0e19f5073564299f2c9779da80b")
+	//App, err := newrelic.NewApplication(config)
+
 	router.Use(gin.Logger())
 	router.LoadHTMLGlob("templates/*")
 	/*router.LoadHTMLFiles("templates/twitterlogin.tmpl.html",
