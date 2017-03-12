@@ -22,7 +22,7 @@ func getPort() string {
 
 func initRouter() {
 
-	router.Use(NewRelic("175defc71b45f0e19f5073564299f2c9779da80b", "TwiSSR", true))
+	router.Use(NewRelic("175defc71b45f0e19f5073564299f2c9779da80b", "TwiSSR", false))
 
 	//config := newrelic.NewConfig("TwiSSR", "175defc71b45f0e19f5073564299f2c9779da80b")
 	//App, err := newrelic.NewApplication(config)
