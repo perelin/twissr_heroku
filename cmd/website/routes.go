@@ -28,7 +28,7 @@ func initRouter() {
 	//App, err := newrelic.NewApplication(config)
 
 	router.Use(gin.Logger())
-	router.LoadHTMLGlob("../../templates/*")
+	router.LoadHTMLGlob(os.Getenv("TEMPLATE_FOLDER_PREFIX") + "templates/*")
 	/*router.LoadHTMLFiles("templates/twitterlogin.tmpl.html",
 	"templates/twittercallback.tmpl.html",
 	"templates/h5bp/twissr.html")*/
