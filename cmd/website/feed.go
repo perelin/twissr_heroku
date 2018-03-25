@@ -83,7 +83,7 @@ func getFeedForTwitterUser(c *gin.Context, userID string) (string, error) {
 
 func removeURLs(text string) string {
 	result := text
-	urls := xurls.Relaxed.FindAllString(text, -1)
+	urls := xurls.Relaxed().FindAllString(text, -1)
 	for _, url := range urls {
 		result = strings.Replace(result, url, "", -1)
 	}
@@ -92,7 +92,7 @@ func removeURLs(text string) string {
 
 func linkURLs(text string) string {
 	result := text
-	urls := xurls.Relaxed.FindAllString(text, -1)
+	urls := xurls.Relaxed().FindAllString(text, -1)
 	for _, url := range urls {
 		result = strings.Replace(result, url,
 			"<a href='"+url+"' target='_blank'>"+url+"</a>", -1)

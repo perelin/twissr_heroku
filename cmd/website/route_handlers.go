@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"net/http"
+	"net/url"
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
@@ -62,4 +63,26 @@ func twitterCallbackHandler(c *gin.Context) {
 	}
 
 	c.HTML(http.StatusOK, "twissr_cb.tmpl.html", content)
+}
+
+func lists(c *gin.Context) {
+
+	userID := c.Param("userID")
+
+	twitterUser, err := getTwitterUserFromDB(userID)
+
+	if err != nil {
+		c.String(http.StatusOK, "Couldn´t find user in DB")
+	}
+
+	lists := getTwitterLists(twitterUser, url.Values{})
+
+	for _, list := range lists {
+		log.Printf("%#v", list.Id)
+		//spew.Dump(list)
+
+	}
+
+	c.String(http.StatusOK, twitterUser.screenName)
+
 }

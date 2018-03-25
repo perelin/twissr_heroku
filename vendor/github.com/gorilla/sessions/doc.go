@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-Package gorilla/sessions provides cookie and filesystem sessions and
+Package sessions provides cookie and filesystem sessions and
 infrastructure for custom session backends.
 
 The key features are:
@@ -29,11 +29,10 @@ Let's start with an example that shows the sessions API in a nutshell:
 	var store = sessions.NewCookieStore([]byte("something-very-secret"))
 
 	func MyHandler(w http.ResponseWriter, r *http.Request) {
-		// Get a session. We're ignoring the error resulted from decoding an
-		// existing session: Get() always returns a session, even if empty.
+		// Get a session. Get() always returns a session, even if empty.
 		session, err := store.Get(r, "session-name")
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
@@ -76,11 +75,11 @@ flashes, call session.Flashes(). Here is an example:
 		// Get a session.
 		session, err := store.Get(r, "session-name")
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		// Get the previously flashes, if any.
+		// Get the previous flashes, if any.
 		if flashes := session.Flashes(); len(flashes) > 0 {
 			// Use the flash values.
 		} else {
@@ -118,10 +117,10 @@ so it is easy to register new datatypes for storage in sessions:
 	}
 
 As it's not possible to pass a raw type as a parameter to a function, gob.Register()
-relies on us passing it an empty pointer to the type as a parameter. In the example
-above we've passed it a pointer to a struct and a pointer to a custom type
-representing a map[string]interface. This will then allow us to serialise/deserialise
-values of those types to and from our sessions.
+relies on us passing it a value of the desired type. In the example above we've passed
+it a pointer to a struct and a pointer to a custom type representing a
+map[string]interface. (We could have passed non-pointer values if we wished.) This will
+then allow us to serialise/deserialise values of those types to and from our sessions.
 
 Note that because session values are stored in a map[string]interface{}, there's
 a need to type-assert data when retrieving it. We'll use the Person struct we registered above:
@@ -129,7 +128,7 @@ a need to type-assert data when retrieving it. We'll use the Person struct we re
 	func MyHandler(w http.ResponseWriter, r *http.Request) {
 		session, err := store.Get(r, "session-name")
 		if err != nil {
-			http.Error(w, err.Error(), 500)
+			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
 

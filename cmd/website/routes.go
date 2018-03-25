@@ -22,13 +22,13 @@ func getPort() string {
 
 func initRouter() {
 
-	router.Use(NewRelic("175defc71b45f0e19f5073564299f2c9779da80b", "TwiSSR", false))
+	//router.Use(NewRelic("175defc71b45f0e19f5073564299f2c9779da80b", "TwiSSR", false))
 
 	//config := newrelic.NewConfig("TwiSSR", "175defc71b45f0e19f5073564299f2c9779da80b")
 	//App, err := newrelic.NewApplication(config)
 
 	router.Use(gin.Logger())
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob("../../templates/*")
 	/*router.LoadHTMLFiles("templates/twitterlogin.tmpl.html",
 	"templates/twittercallback.tmpl.html",
 	"templates/h5bp/twissr.html")*/
@@ -48,7 +48,7 @@ func initRouter() {
 	router.GET("/tl", twitterLoginHandler)
 	router.GET("/tc", twitterCallbackHandler)
 	router.GET("/hometimeline/:userID", twitterHomeTimelineRSSHandler)
-
+	router.GET("/lists/:userID", lists)
 	/*
 		router.GET("/tl", func(c *gin.Context) {
 			c.HTML(http.StatusOK, "twitterlogin.tmpl.html", nil)
