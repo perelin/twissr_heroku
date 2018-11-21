@@ -28,17 +28,19 @@ func initRouter() {
 	//App, err := newrelic.NewApplication(config)
 
 	router.Use(gin.Logger())
-	//router.LoadHTMLGlob(os.Getenv("TEMPLATE_FOLDER_PREFIX") + "templates/*")
-	router.LoadHTMLGlob("templates/*")
+	router.LoadHTMLGlob(os.Getenv("TEMPLATE_FOLDER_PREFIX") + "templates/*")
+
+	//router.LoadHTMLGlob("templates/*")
+
 	/*router.LoadHTMLFiles("templates/twitterlogin.tmpl.html",
 	"templates/twittercallback.tmpl.html",
 	"templates/h5bp/twissr.html")*/
 	//router.LoadHTMLGlob("templates/h5bp/*.html")
-	router.Static("/static", "static")
-	router.Static("/js", "static/h5bp/js")
-	router.Static("/css", "static/h5bp/css")
-	router.Static("/img", "static/h5bp/img")
-	router.Static("/fonts", "static/h5bp/fonts")
+	router.Static("/static", os.Getenv("TEMPLATE_FOLDER_PREFIX")+"static")
+	router.Static("/js", os.Getenv("TEMPLATE_FOLDER_PREFIX")+"static/h5bp/js")
+	router.Static("/css", os.Getenv("TEMPLATE_FOLDER_PREFIX")+"static/h5bp/css")
+	router.Static("/img", os.Getenv("TEMPLATE_FOLDER_PREFIX")+"static/h5bp/img")
+	router.Static("/fonts", os.Getenv("TEMPLATE_FOLDER_PREFIX")+"static/h5bp/fonts")
 
 	/*
 		router.GET("/", func(c *gin.Context) {

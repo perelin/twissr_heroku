@@ -1,6 +1,7 @@
 
 # Local start
 load local DB
+$ go install ./...
 $ heroku local
 or
 $ cd cmd/website/
