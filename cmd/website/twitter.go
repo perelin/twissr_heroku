@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -41,7 +42,8 @@ func getTwitterAuthBasics(c *gin.Context) (string, *oauth.Credentials) {
 
 	callbackURL := "http://" + c.Request.Host + "/tc"
 
-	//fmt.Println(callbackURL)
+	fmt.Println("callbackURL:")
+	fmt.Println(callbackURL)
 
 	authURL, creds, err := api.AuthorizationURL(callbackURL)
 
