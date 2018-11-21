@@ -35,13 +35,17 @@ func getApiWithCredentials() *anaconda.TwitterApi {
 }
 
 func getTwitterAuthBasics(c *gin.Context) (string, *oauth.Credentials) {
-	spew.Dump(c.Request.Host)
+	//spew.Dump(c.Request.Host)
 
 	var api = getApiWithCredentials()
 
-	authURL, creds, err := api.AuthorizationURL("http://" + c.Request.Host + "/tc")
+	callbackURL := "http://" + c.Request.Host + "/tc"
 
-	spew.Dump("######################################")
+	//fmt.Println(callbackURL)
+
+	authURL, creds, err := api.AuthorizationURL(callbackURL)
+
+	//spew.Dump("######################################")
 
 	if err != nil {
 		http.Error(c.Writer, "Error getting Twitter Creds + Url, "+err.Error(), 500)
@@ -87,6 +91,7 @@ func getTwitterHomeTimeline(user TwitterUser, v url.Values) (timeline []anaconda
 }
 
 func getTwitterLists(user TwitterUser, v url.Values) []anaconda.List {
+
 	api := anaconda.NewTwitterApi(user.oauthToken, user.oauthTokenSecret)
 	id, err := strconv.ParseInt(user.userID, 10, 64)
 	if err != nil {
@@ -96,8 +101,22 @@ func getTwitterLists(user TwitterUser, v url.Values) []anaconda.List {
 	if err != nil {
 		panic(err)
 	}
-
 	return lists
+}
+
+func getFriendsList(user TwitterUser, v url.Values) anaconda.Cursor {
+	api := anaconda.NewTwitterApi(user.oauthToken, user.oauthTokenSecret)
+	id, err := strconv.ParseInt(user.userID, 10, 64)
+	if err != nil {
+		panic(err)
+	}
+	friends, err := api.GetFriendsUser(id, v)
+	if err != nil {
+		panic(err)
+	}
+
+	//spew.Dump(friends)
+	return friends
 }
 
 // func getTwitterListMemebers(user TwitterUser, listID int64, v url.Values) (c UserCursor, err error) {

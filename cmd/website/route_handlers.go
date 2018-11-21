@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"net/url"
 
+	"github.com/davecgh/go-spew/spew"
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/render"
 )
@@ -79,9 +80,20 @@ func lists(c *gin.Context) {
 
 	for _, list := range lists {
 		log.Printf("%#v", list.Id)
-		//spew.Dump(list)
 
+		//spew.Dump(list)
 	}
+
+	friends := getFriendsList(twitterUser, url.Values{})
+
+	// todo: continues here -> get friend ids -> check if friend is in any of the lists -> write to new list
+
+	spew.Dump(friends.Ids)
+
+	// for _, friend := range friends {
+	// 	log.Printf("%#v", friend.Name)
+	// 	//spew.Dump(list)
+	// }
 
 	c.String(http.StatusOK, twitterUser.screenName)
 

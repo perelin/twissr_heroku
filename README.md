@@ -5,6 +5,7 @@ $ heroku local
 or
 $ cd cmd/website/
 $ export DATABASE_URL=postgres://perelin@localhost/twissr_local?sslmode=disable
+$ export TEMPLATE_FOLDER_PREFIX=../../
 $ go build && ./website OR fresh
  
  # INstalle/Update depnedencies
